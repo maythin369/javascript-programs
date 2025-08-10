@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-sketch</title>
+    <style>
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+            border: 1px solid black;
+            justify-content: flex-start; /* or center */
+            align-items: flex-start;
+        }
+
+        .grid {
+            width: 31.25px;
+            height: 31.25px;
+            box-sizing: border-box;
+            border: 1px solid #eee; /* optional for visibility */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="button">
+        <button>Change grid size</button>
+    </div>
+
+    <div class="container">
+
+    </div>
+
+
+    <script>
+
+        // Setting the original 16x16 grid
+        const container = document.querySelector('.container');
+
+        for (let i = 0; i < 256; i++) {
+            const div = document.createElement('div');
+            div.classList.add('grid');
+            container.appendChild(div);
+        }
+        addHoverEvent();
+
+
+        // Changing the grid size with the button
+        const button = document.querySelector('button');
+        button.addEventListener('click', () => {
+            const newSize = prompt('Enter a new grid size (no more than 100):');
+            if (newSize && newSize <= 100) {
+                container.innerHTML = ''; // Clear existing grids
+                const gridSize = 500 / newSize; // Calculate size based on new grid size
+                for (let i = 0; i < newSize * newSize; i++) {
+                    const div = document.createElement('div');
+                    div.classList.add('grid');
+                    div.style.width = `${gridSize}px`;
+                    div.style.height = `${gridSize}px`;
+                    container.appendChild(div);
+                }
+                addHoverEvent();
+            } else {
+                alert('Please enter a valid number (no more than 100).');
+            }
+        });
+
+
+        //Random color generator
+        function getColor(){
+
+            let hexDigits = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
+            color = '#'
+
+            for(let i = 0; i < 6; i++){
+                let randNum = Math.floor(Math.random()*16) + 1;
+                color += hexDigits[randNum];
+            }
+
+            return color;
+        }
+
+        
+        // Function to add hover event to all .grid elements
+        function addHoverEvent() {
+            const grids = document.querySelectorAll('.grid');
+            grids.forEach(grid => {
+                grid.addEventListener('mouseover', function() {
+                    grid.style.backgroundColor = getColor();
+                });
+            });
+        }
+
+        
+</script>
+</body>
+</html>

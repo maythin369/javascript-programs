@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Beautiful Calculator</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220aa;
+      --glass: rgba(255,255,255,0.06);
+      --accent1: #7c3aed; /* purple */
+      --accent2: #06b6d4; /* cyan */
+      --text:#e6eef8;
+      --muted:#98a0b3;
+      --btn:#0b1220;
+      --danger:#ef4444;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent),
+                  radial-gradient(800px 400px at 90% 90%, rgba(6,182,212,0.08), transparent),
+                  var(--bg);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+    }
+    .calculator{
+      width:360px; max-width:94vw;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;
+      padding:20px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px) saturate(1.1);
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;margin-bottom:12px;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:10px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:white;box-shadow:0 6px 18px rgba(6,182,212,0.12);
+    }
+    .title{font-size:16px;font-weight:600}
+    .subtitle{font-size:12px;color:var(--muted)}
+
+    .screen{
+      margin-top:6px;margin-bottom:14px;
+      border-radius:12px;padding:14px;background:var(--glass);
+      min-height:92px;display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .history{font-size:13px;color:var(--muted);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .output{font-size:28px;font-weight:600;text-align:right;word-break:break-all}
+
+    .pad{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    button.key{
+      appearance:none;border:0;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--text);font-size:18px;font-weight:600;cursor:pointer;box-shadow:0 6px 14px rgba(2,6,23,0.5);transition:transform .08s ease, box-shadow .08s ease;
+    }
+    button.key:active{transform:translateY(2px);box-shadow:0 4px 10px rgba(2,6,23,0.55)}
+    button.op{background:linear-gradient(180deg, rgba(124,58,237,0.16), rgba(6,182,212,0.06));}
+    button.wide{grid-column:span 2}
+    button.dark{background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.35));}
+    button.danger{background:linear-gradient(180deg, rgba(239,68,68,0.14), rgba(239,68,68,0.06));}
+
+    .hint{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+
+    /* responsive tweaks */
+    @media (max-width:420px){
+      .calculator{padding:14px;border-radius:16px}
+      .output{font-size:22px}
+      button.key{padding:12px;font-size:16px}
+    }
+
+    /* focus styles for accessibility */
+    button.key:focus{outline:3px solid rgba(124,58,237,0.18)}
+  </style>
+</head>
+<body>
+  <main class="calculator" role="application" aria-label="Calculator">
+    <div class="brand">
+      <div class="logo">≡</div>
+      <div>
+        <div class="title">Aurora Calculator</div>
+        <div class="subtitle">keyboard-friendly • supports Enter, Backspace, Escape</div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen">
+      <div class="history" id="history" aria-live="polite"></div>
+      <div class="output" id="output" aria-live="assertive">0</div>
+    </div>
+
+    <div class="pad" id="pad">
+      <button class="key dark" data-action="clear">C</button>
+      <button class="key dark" data-action="paren">( )</button>
+      <button class="key dark" data-action="percent">%</button>
+      <button class="key op" data-value="/">÷</button>
+
+      <button class="key" data-value="7">7</button>
+      <button class="key" data-value="8">8</button>
+      <button class="key" data-value="9">9</button>
+      <button class="key op" data-value="*">×</button>
+
+      <button class="key" data-value="4">4</button>
+      <button class="key" data-value="5">5</button>
+      <button class="key" data-value="6">6</button>
+      <button class="key op" data-value="-">−</button>
+
+      <button class="key" data-value="1">1</button>
+      <button class="key" data-value="2">2</button>
+      <button class="key" data-value="3">3</button>
+      <button class="key op" data-value="+">+</button>
+
+      <button class="key" data-value="0" class="wide">0</button>
+      <button class="key" data-value=".">.</button>
+      <button class="key op" data-action="equals">=</button>
+    </div>
+
+    <div class="hint">Try typing with your keyboard: numbers, + - * /, Enter = result, Backspace to delete, Esc/C to clear.</div>
+  </main>
+
+  <script>
+    (function(){
+      const outputEl = document.getElementById('output');
+      const historyEl = document.getElementById('history');
+      const pad = document.getElementById('pad');
+
+      let expression = '';
+      let lastResult = null;
+
+      function updateScreen(){
+        outputEl.textContent = expression || '0';
+      }
+
+      function pushValue(v){
+        // if last action was equals and user types a number, start fresh
+        if (lastResult !== null && /[0-9.]/.test(v) && expression === String(lastResult)){
+          expression = v;
+        } else {
+          expression += v;
+        }
+        lastResult = null;
+        updateScreen();
+      }
+
+      function clearAll(){ expression = ''; lastResult = null; historyEl.textContent = ''; updateScreen(); }
+
+      function backspace(){ expression = expression.slice(0,-1); updateScreen(); }
+
+      function toggleParen(){
+        // smartly add '(' or ')'
+        const open = (expression.match(/\(/g)||[]).length;
+        const close = (expression.match(/\)/g)||[]).length;
+        if (open === close || /[+\-*/(]$/.test(expression) || expression === ''){
+          expression += '(';
+        } else {
+          expression += ')';
+        }
+        updateScreen();
+      }
+
+      function handlePercent(){
+        // append % char — evaluation step will convert % to /100
+        expression += '%';
+        updateScreen();
+      }
+
+      function safeEvaluate(expr){
+        // Basic sanitization: allow digits, spaces, . % + - * / ( )
+        if (!/^[0-9+\-*/().%\s]+$/.test(expr)){
+          throw new Error('Invalid characters in expression');
+        }
+        // convert percent: replace occurrences like '50%' -> '(50/100)'
+        expr = expr.replace(/(\d+(?:\.\d+)?)%/g, '($1/100)');
+        // also prevent accidental leading zeros from being interpreted oddly is fine
+        // Evaluate using Function to avoid eval keyword (similar risk) but we've sanitized input
+        // eslint-disable-next-line no-new-func
+        const fn = new Function('return ' + expr);
+        return fn();
+      }
+
+      function evaluate(){
+        if (!expression) return;
+        try{
+          const res = safeEvaluate(expression);
+          historyEl.textContent = expression + ' =';
+          expression = String(res);
+          outputEl.textContent = expression;
+          lastResult = res;
+        }catch(err){
+          outputEl.textContent = 'Error';
+          lastResult = null;
+        }
+      }
+
+      // click handlers
+      pad.addEventListener('click', (e)=>{
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const v = btn.getAttribute('data-value');
+        const action = btn.getAttribute('data-action');
+        if (action === 'clear') return clearAll();
+        if (action === 'paren') return toggleParen();
+        if (action === 'percent') return handlePercent();
+        if (action === 'equals') return evaluate();
+        if (v) return pushValue(v);
+      });
+
+      // keyboard handlers
+      window.addEventListener('keydown', (e)=>{
+        // don't interfere with typing in inputs if any in the future
+        const key = e.key;
+        if (/^[0-9]$/.test(key)){
+          pushValue(key);
+          e.preventDefault();
+          return;
+        }
+        if (key === '.') { pushValue('.'); e.preventDefault(); return }
+        if (key === '+' || key === '-' || key === '*' || key === '/') { pushValue(key); e.preventDefault(); return }
+        if (key === 'Enter' || key === '=') { evaluate(); e.preventDefault(); return }
+        if (key === 'Backspace') { backspace(); e.preventDefault(); return }
+        if (key === 'Escape' || key.toLowerCase() === 'c') { clearAll(); e.preventDefault(); return }
+        if (key === '%'){ handlePercent(); e.preventDefault(); return }
+        if (key === '(' || key === ')'){ pushValue(key); e.preventDefault(); return }
+      });
+
+      // initialize
+      updateScreen();
+
+      // expose for debugging in console (optional)
+      window.__calc = { pushValue, evaluate, clearAll, backspace };
+    })();
+  </script>
+</body>
+</html>

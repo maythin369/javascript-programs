@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Bookshelf and Button -->
+    <div class="container">
+        <div class="header">
+            <h1>Daisy Library</h1>
+            <button class="addBook">Add Book</button>
+        </div>
+        <div class="grid"></div>
+    </div>
+
+
+    <!-- Popup box to add a new book -->
+    <dialog>
+        <form class="newBookForm">
+            <label for="title">Title</label><br>
+            <input type="text" id="title" name="title" required>
+            <br><br>
+
+            <label for="author">Author</label><br>
+            <input type="text" id="author" name="author" required>
+            <br><br>
+
+            <label for="pages">Pages</label><br>
+            <input type="number" id="pages" name="pages" required>
+            <br><br>
+
+            <label for="read">Read: </label>
+            <input type="checkbox" id="read" name="read">
+            <br><br>
+
+            <div class="form-buttons">
+                <button id="cancel" type="button">Cancel</button>
+                <button id="save" type="button">Save</button>
+            </div>
+            
+        </form>
+    </dialog>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>

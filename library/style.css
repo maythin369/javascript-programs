@@ -1,0 +1,158 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+
+
+/* Header Text and Button Styling */
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #fff;
+
+    height: 10vh;
+    width: 100vw;
+
+    padding: 0 5rem;
+    background-color: rgb(64, 146, 119);
+
+    color: rgb(250, 244, 236);
+}
+
+.addBook, .addBook:focus{
+    background-color: rgb(250, 244, 236);
+    border: 2px solid rgb(250, 244, 236);
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.addBook:hover{
+    background-color: rgb(64, 146, 119);
+    color: rgb(250, 244, 236);
+    border: 2px solid rgb(250, 244, 236);
+    transition: 0.3s;
+}
+
+
+
+/* Grid for Books Styling */
+.grid{
+    height: 90vh;
+    width: 100vw;
+    padding: 3rem 5rem;
+    background-color: rgba(64, 146, 119, 0.5);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-auto-rows: 200px;
+    gap: 1.5rem;
+}
+
+
+
+/* Styling the book item */
+.book{
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    background-color: cornflowerblue;
+    border: 2px solid #fff;
+    border-radius: 0.25rem;
+}
+
+.author{
+    font-weight: bolder;
+}
+
+.pages{
+    font-weight: bold;
+}
+
+.readLabel, .notReadLabel{
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.readLabel{
+    background-color: rgb(141, 255, 215);
+    color:rgb(2, 70, 47)
+}
+
+.notReadLabel{
+    background-color: rgb(255, 132, 132);
+    color:rgb(109, 10, 10)
+}
+
+.removeBtn{
+    width: 100%;
+    padding: 0.5rem;
+    background-color: rgb(255, 30, 0);
+    color: #fff;
+    font-weight: bolder;
+}
+
+
+
+/* Styling the dialog box */
+dialog{
+    width: 30vw;
+    height: 60vh;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    align-content: center;
+}
+
+input{
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+#title, #author, #pages{
+    width: 100%;
+    text-align: left;
+}
+
+#cancel, #save{
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: royalblue;
+    color: white;
+}
+
+.newBookForm{
+    padding: 0 2.5rem;
+}
+
+.form-buttons{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
